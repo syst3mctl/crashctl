@@ -148,7 +148,7 @@ func (m *MemStore) ListEvents(ctx context.Context, opts ListEventsOpts) ([]*doma
 		return matched[i].Timestamp.After(matched[j].Timestamp)
 	})
 
-	matched = paginate(matched, opts.Offset, opts.Limit)
+	matched = applyPage(matched, opts.Offset, opts.Limit)
 
 	out := make([]*domain.Event, len(matched))
 	for i, e := range matched {
@@ -224,7 +224,7 @@ func (m *MemStore) ListGroups(ctx context.Context, opts ListGroupsOpts) ([]*doma
 		})
 	}
 
-	matched = paginate(matched, opts.Offset, opts.Limit)
+	matched = applyPage(matched, opts.Offset, opts.Limit)
 
 	out := make([]*domain.ErrorGroup, len(matched))
 	for i, g := range matched {
@@ -296,7 +296,7 @@ func (m *MemStore) ListPodCrashes(ctx context.Context, opts ListCrashesOpts) ([]
 		return matched[i].Timestamp.After(matched[j].Timestamp)
 	})
 
-	matched = paginate(matched, opts.Offset, opts.Limit)
+	matched = applyPage(matched, opts.Offset, opts.Limit)
 
 	out := make([]*domain.PodCrash, len(matched))
 	for i, c := range matched {
@@ -357,16 +357,3 @@ func (m *MemStore) DeleteEventsOlderThan(ctx context.Context, cutoff time.Time) 
 	return deleted, nil
 }
 
-// --- pagination helper ------------------------------------------------------
-
-// paginate applies offset and limit to any slice type. limit=0 means no cap.
-func paginate[T any](s []T, offset, limit int) []T {
-	if offset >= len(s) {
-		return nil
-	}
-	s = s[offset:]
-	if limit > 0 && limit < len(s) {
-		s = s[:limit]
-	}
-	return s
-}
