@@ -1,0 +1,45 @@
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Build output
+dist/
+bin/
+
+# Test artifacts
+*.test
+*.out
+coverage.html
+coverage.txt
+
+# Go workspace
+go.work
+go.work.sum
+
+# BadgerDB data
+/data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+.cursor/
+.claude/
+
+# Environment
+.env
+.env.*
+
+# Docs
+CLAUDE.md
+crashctl-guide.md
+
+# Helper files
+scripts/
